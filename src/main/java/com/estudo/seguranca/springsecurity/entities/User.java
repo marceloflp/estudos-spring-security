@@ -1,12 +1,18 @@
 package com.estudo.seguranca.springsecurity.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,38 +22,51 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String nome;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
+	
+	@Column
+	private String login;
+	
+	@Column
 	private String email;
+	
+	@Column
 	private String senha;
+	
+	
+	@ElementCollection
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+	private List<String> roles;
 	
 	public User() {
 		super();
 	}
 
-	public User(Long id, String nome, String email, String senha) {
+	public User(UUID id, String login, String email, String senha, List<String> roles) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.login = login;
 		this.email = email;
 		this.senha = senha;
+		this.roles = roles;
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
 	public String getEmail() {
@@ -64,6 +83,14 @@ public class User implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 	@Override

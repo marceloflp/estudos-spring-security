@@ -1,7 +1,6 @@
 package com.estudo.seguranca.springsecurity.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -49,7 +48,7 @@ public class UserService {
 
 	private void update(User userUpdate, User user) {
 		userUpdate.setEmail(user.getEmail());
-		userUpdate.setNome(user.getNome());
+		userUpdate.setLogin(user.getLogin());
 		userUpdate.setSenha(user.getSenha());
 	}
 	

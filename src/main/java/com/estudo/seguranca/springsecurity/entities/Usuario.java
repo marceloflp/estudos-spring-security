@@ -1,23 +1,19 @@
 package com.estudo.seguranca.springsecurity.entities;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
+public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -29,28 +25,20 @@ public class User implements Serializable {
 	private String login;
 	
 	@Column
-	private String email;
-	
-	@Column
 	private String senha;
 	
+	private String role;
 	
-	@ElementCollection
-    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-	private List<String> roles;
-	
-	public User() {
+	public Usuario() {
 		super();
 	}
 
-	public User(UUID id, String login, String email, String senha, List<String> roles) {
+	public Usuario(UUID id, String login, String senha, String role) {
 		super();
 		this.id = id;
 		this.login = login;
-		this.email = email;
 		this.senha = senha;
-		this.roles = roles;
+		this.role = role;
 	}
 
 	public UUID getId() {
@@ -69,14 +57,6 @@ public class User implements Serializable {
 		this.login = login;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -85,12 +65,12 @@ public class User implements Serializable {
 		this.senha = senha;
 	}
 	
-	public List<String> getRoles() {
-		return roles;
+	public String getRole() {
+		return role;
 	}
 
-	public void setRoles(List<String> roles) {
-		this.roles = roles;
+	public void setRoles(String role) {
+		this.role = role;
 	}
 
 	@Override
@@ -106,7 +86,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Usuario other = (Usuario) obj;
 		return Objects.equals(id, other.id);
 	}
 	

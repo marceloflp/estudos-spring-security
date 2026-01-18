@@ -2,15 +2,16 @@ package com.estudo.seguranca.springsecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.estudo.seguranca.springsecurity.services.UsuarioService;
+import com.estudo.seguranca.springsecurity.services.config.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -24,8 +25,10 @@ public class SecurityConfiguration {
 				.formLogin(configurer -> {
 					configurer.loginPage("/login").permitAll();
 					})
-//				.httpBasic(Customizer.withDefaults())
+				.httpBasic(Customizer.withDefaults())
 				.authorizeHttpRequests(authorize -> {
+					authorize.requestMatchers("/login/**").permitAll();
+					authorize.requestMatchers("/users/cadastrar").permitAll();
 					authorize.anyRequest().authenticated();
 				})
 				.build();
@@ -37,20 +40,20 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-		UserDetails user1 = User.builder()
-				.username("usuario")
-				.password(encoder.encode("123"))
-				.roles("USER")
-				.build();
-		
-		UserDetails user2 = User.builder()
-				.username("admin")
-				.password(encoder.encode("321"))
-				.roles("ADMIN")
-				.build();
-		
-		return new InMemoryUserDetailsManager(user1, user2);
+	public UserDetailsService userDetailsService(UsuarioService userService) {
+//		UserDetails user1 = User.builder()
+//				.username("usuario")
+//				.password(encoder.encode("123"))
+//				.roles("USER")
+//				.build();
+//		
+//		UserDetails user2 = User.builder()
+//				.username("admin")
+//				.password(encoder.encode("321"))
+//				.roles("ADMIN")
+//				.build();
+//		
+		return new CustomUserDetailsService(userService);
 	}
 	
 }
